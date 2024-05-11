@@ -69,7 +69,7 @@ else
 
 fi
 
-/bin/su -l -c "echo /usr/bin/python3 /opt/arm/arm/ripper/main.py -d ${DEVNAME} ${PROTECTION} | at now" -s /bin/bash ${USER}
+/bin/su -l -c "echo /opt/arm/venv/bin/python3 /opt/arm/arm/ripper/main.py -d ${DEVNAME} ${PROTECTION} | at now" -s /bin/bash ${USER}
 
 #######################################################################################
 # Check to see if the admin page is running, if not, start it
@@ -77,5 +77,5 @@ fi
 
 if ! pgrep -f "runui.py" > /dev/null; then
 	echo "[ARM] ARM Webgui not running; starting it " | logger -t ARM -s
-	/bin/su -l -c "/usr/bin/python3 /opt/arm/arm/runui.py  " -s /bin/bash ${USER}
+	/bin/su -l -c "/opt/arm/venv/bin/python3 /opt/arm/arm/runui.py  " -s /bin/bash ${USER}
 fi

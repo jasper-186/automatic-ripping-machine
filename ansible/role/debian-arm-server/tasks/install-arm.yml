@@ -1,0 +1,58 @@
+---
+- name: Add directory as Safe for Git
+  shell: "git config --global --add safe.directory /opt/arm"
+
+  changed_when: false
+- name: Clone Arm Repo From Github
+  ansible.builtin.git:
+    repo: https://github.com/automatic-ripping-machine/automatic-ripping-machine.git
+    dest: /opt/arm
+    force: true
+    accept_newhostkey: true
+    
+- name: Reset permissions on /opt/arm directory
+  become: true
+  ansible.builtin.file:
+    path: "/opt/arm"
+    state: directory
+    mode: "o+rx"
+    owner: arm
+    group: arm
+    recurse: true
+  changed_when: false
+
+- name: "Setup Virtual Env [ /opt/arm/venv ]"
+  ansible.builtin.pip:
+    chdir: /opt/arm
+    umask: "0022"
+    requirements: requirements.txt 
+    virtualenv: /opt/arm/venv
+    virtualenv_command: 'python3 -m venv'
+ 
+- name: Create /var/arm/db
+  ansible.builtin.file:
+    path: "/var/arm/db"
+    state: directory
+    mode: "ugo+rwx"
+    owner: arm
+    group: arm
+    
+    recurse: true
+
+- name: Create /var/arm/logs
+  ansible.builtin.file:
+    path: "/var/arm/logs"
+    state: directory
+    mode: "ugo+rwx"
+    owner: arm
+    group: arm
+    recurse: true
+
+- name: Create /var/arm/media
+  ansible.builtin.file:
+    path: "/var/arm/media"
+    state: directory
+    mode: "ugo+rwx"
+    owner: arm
+    group: arm
+    recurse: true

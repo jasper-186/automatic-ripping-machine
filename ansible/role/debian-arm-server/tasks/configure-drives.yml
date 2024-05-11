@@ -1,0 +1,33 @@
+---
+# Disable Autoclose feature
+- name: Disable Unattended Drive Auto Close
+  ansible.builtin.copy: 
+    src: 60-cdrom-autoclose.conf
+    dest: "/etc/sysctl.d/60-cdrom-autoclose.conf" 
+    owner: root 
+    group: root
+
+# gott do sudo to get the dmesg
+- name: Get List of Drives
+  shell: dmesg | grep -i -E '\b(dvd|cd)\b' | grep -i -o -E '\[(sr[0-9])\]' |  sed 's/^.//;s/.$//'
+  become: true
+  register: drives_list
+
+- name: Create drive mount points
+  ansible.builtin.file:
+    path: "/mnt/dev/{{ item }}"
+    state: directory
+    recurse: yes
+  with_lines: drives_list
+
+  #/dev/sr0  /mnt/dev/sr0  udf,iso9660  users,noauto,exec,utf8  0  0
+- name: Create fstab entry for each drive
+  ansible.posix.mount: 
+    boot: no 
+    src: "/dev/{{ item }}"
+    path: "/mnt/dev/{{ item }}"
+    fstype: udf,iso9660
+    opts: user,noauto,exec,utf8
+    state: present
+  changed_when: false
+  with_lines: drives_list

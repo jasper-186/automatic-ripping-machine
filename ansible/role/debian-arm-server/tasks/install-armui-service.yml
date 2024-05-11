@@ -1,0 +1,24 @@
+---
+- name: Re-configure Arm UI to use the Virtual environment
+  ansible.builtin.lineinfile:
+    path: "/opt/arm/setup/armui.service"
+    search_string: 'ExecStart=python3 /opt/arm/arm/runui.py'
+    line: ExecStart=/opt/arm/venv/bin/python3 /opt/arm/arm/runui.py
+    create: false
+
+- name: Create armui systemd service
+  ansible.builtin.copy:
+    src: armui.service
+    dest: "/etc/systemd/system/armui.service"
+    force: true
+    owner: root
+    group: root
+  when: lookup('env','MOLECULE_DOCKER_TEST', "0") != "1"
+
+- name: enable armui systemd service
+  ansible.builtin.systemd:
+    daemon_reload: yes
+    name: armui
+    enabled: yes
+    state: started
+  when: lookup('env','MOLECULE_DOCKER_TEST', "0") != "1"

@@ -1,0 +1,12 @@
+---
+# Usage:
+# ansible-playbook <path/to/this/playbook> -l "<hostname>"
+- name: Install Automatic Ripping Machine Server on Debian
+  hosts: all
+  remote_user: ansible
+  tags: arm
+  become: true
+  tasks:
+    - name: Include role
+      ansible.builtin.include_role: 
+        name: roles/debian-arm-server

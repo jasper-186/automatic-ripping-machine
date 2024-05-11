@@ -1,0 +1,16 @@
+---
+- name: Create ansible role directory
+  file:
+    path: /home/ansible/applied-roles
+    state: directory
+    recurse: yes
+  changed_when: false
+
+- name: Creates ansible role applied file
+  file:
+    path: /home/ansible/applied-roles/debian-arm-server.applied
+    state: touch
+    owner: ansible 
+    group: ansible
+    mode: "0644"
+  changed_when: false

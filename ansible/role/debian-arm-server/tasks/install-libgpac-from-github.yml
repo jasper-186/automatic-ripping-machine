@@ -1,0 +1,383 @@
+---
+# for some reason CCExtractor is not always available via package managment, so just bail on that and build from scratch       
+#  zlib1g-dev libfreetype6-dev libjpeg62-dev libpng-dev libmad0-dev libfaad-dev libogg-dev libvorbis-dev libtheora-dev liba52-0.7.4-dev libavcodec-dev libavformat-dev libavutil-dev libswscale-dev libavdevice-dev libnghttp2-dev libopenjp2-7-dev libcaca-dev libxv-dev x11proto-video-dev libgl1-mesa-dev libglu1-mesa-dev x11proto-gl-dev libxvidcore-dev libssl-dev libjack-jackd2-dev libasound2-dev libpulse-dev libsdl2-dev dvb-apps mesa-utils 
+- name: "Install build-essential [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - build-essential
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install pkg-config [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - pkg-config
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install g++ [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - g++
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install git [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - git
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install cmake [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - cmake
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install yasm [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - yasm
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install zlib1g-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - zlib1g-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libfreetype6-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libfreetype6-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libjpeg62-turbo-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libjpeg62-turbo-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libpng-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libpng-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libmad0-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libmad0-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libfaad-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libfaad-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libogg-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libogg-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libvorbis-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libvorbis-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libtheora-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libtheora-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install liba52-0.7.4-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - liba52-0.7.4-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libavcodec-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libavcodec-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libavformat-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libavformat-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libavutil-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libavutil-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libswscale-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libswscale-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libavdevice-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libavdevice-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libnghttp2-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libnghttp2-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libopenjp2-7-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libopenjp2-7-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libcaca-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libcaca-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libxv-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libxv-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install x11proto-video-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - x11proto-video-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libgl1-mesa-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libgl1-mesa-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libglu1-mesa-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libglu1-mesa-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install x11proto-gl-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - x11proto-gl-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libxvidcore-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libxvidcore-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libssl-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libssl-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libjack-jackd2-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libjack-jackd2-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libasound2-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libasound2-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libpulse-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libpulse-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libsdl2-dev [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libsdl2-dev
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install dvb-apps [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - dvb-apps
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install mesa-utils [libgpac-dev build Dependency]"
+  ansible.builtin.package:
+    name:
+      - mesa-utils
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: Create libgpac-dev build directory
+  ansible.builtin.file:
+    path: "/var/tmp/libgpac-dev"
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+    recurse: yes
+
+#git config --global --add safe.directory /var/tmp/libgpac-dev
+- name: Add directory as Safe for Git
+  shell: "git config --global --add safe.directory /var/tmp/libgpac-dev"
+  changed_when: false
+
+- name: Git checkout libgpac-dev repo
+  ansible.builtin.git:
+    repo: 'https://github.com/gpac/gpac.git'
+    dest: /var/tmp/libgpac-dev
+    version: "v2.4.0"
+    depth: 1
+    force: true
+    accept_newhostkey: true
+
+- name: Build libgpac-dev source
+  shell: "{{ item }}"
+  become: true
+  args:
+    chdir: "{{ '/var/tmp/libgpac-dev' }}"
+  with_items:
+    - ./configure
+    - yes yes | make --silent
+  changed_when: false
+
+- name: Install libgpac-dev 
+  shell: "{{ item }}"
+  become: true
+  args:
+    chdir: "{{ '/var/tmp/libgpac-dev' }}"
+  with_items:
+    - make install
+    - make install-lib
+  changed_when: false
+
+# - name: Cleanup libpac-dev Build Directory
+#   ansible.builtin.file:
+#     path: "/var/tmp/libgpac-dev"
+#     state: absent

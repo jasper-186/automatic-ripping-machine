@@ -1,0 +1,67 @@
+---
+# ansible.builtin.apt -> deb
+# Requires the xz-utils package to extract the control file of the deb package to install.
+- name: "Install xz-utils [ansible build Dependency]"
+  ansible.builtin.package:
+    name:
+      - xz-utils
+    state: present
+  changed_when: false
+
+- name: "Install debhelper [libdvd build Dependency]"
+  ansible.builtin.package:
+    name:
+      - debhelper            
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: Gather installed packages
+  package_facts:
+
+- name: Create /var/tmp/libdvd-pkg
+  ansible.builtin.file:
+    path: /var/tmp/libdvd-pkg
+    state: directory
+    recurse: yes
+
+- name: Download libdvd-pkg_1.4.3-1-1_all.deb [if not in APT]
+  ansible.builtin.get_url: 
+    url: "http://ftp.us.debian.org/debian/pool/contrib/libd/libdvd-pkg/libdvd-pkg_1.4.3-1-1_all.deb"
+    dest: "/var/tmp/libdvd-pkg/libdvd-pkg_1.4.3-1-1_all.deb"
+    #owner: arm
+    #group: arm
+    mode: '0555'
+  when: "'libdvd-pkg' not in ansible_facts.packages"
+  changed_when: false
+
+# sudo dpkg -i libdvd-pkg_1.4.0-1-2_all.deb
+- name: Install libdvd [if not in APT]
+  ansible.builtin.apt:
+    deb: /var/tmp/libdvd-pkg/libdvd-pkg_1.4.3-1-1_all.deb
+    state: present
+  when: "'libdvd-pkg' not in ansible_facts.packages"
+  changed_when: false
+ 
+- name: Cleanup /var/tmp/libdvd-pkg
+  ansible.builtin.file:
+    path: /var/tmp/libdvd-pkg
+    state: absent
+
+# apt --fix-broken install
+- name: fix broken packages
+  apt:
+    state: fixed
+  changed_when: false
+
+# uts probably already installed
+#- ansible.builtin.include_tasks: install-libbluray-from-videolan.yml
+
+- name: Reconfigure libdvd-pkg
+  become: true
+  ansible.builtin.command:
+    cmd: "dpkg-reconfigure libdvd-pkg"
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false

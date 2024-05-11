@@ -1,0 +1,191 @@
+---     
+- name: Gather installed packages [ccextractor build Dependency]
+  package_facts: 
+  
+- name: "Install libgpac-dev [ccextractor build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libgpac-dev        
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+  when: "'libgpac-dev' in ansible_facts.packages"
+
+- name: "Build libgpac-dev From Scratch [ccextractor build Dependency]"
+  ansible.builtin.include_tasks: install-libgpac-from-github.yml
+  when: "'libgpac-dev' not in ansible_facts.packages"
+
+- name: "Install libglew-dev [ccextractor build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libglew-dev         
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libglfw3-dev [ccextractor build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libglfw3-dev 
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install cmake [ccextractor build Dependency]"
+  ansible.builtin.package:
+    name:
+      - cmake            
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install gcc [ccextractor build Dependency]"
+  ansible.builtin.package:
+    name:
+      - gcc            
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libcurl4-gnutls-dev [ccextractor build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libcurl4-gnutls-dev            
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install tesseract-ocr [ccextractor build Dependency]"
+  ansible.builtin.package:
+    name:
+      - tesseract-ocr           
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libtesseract-dev [ccextractor build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libtesseract-dev           
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libleptonica-dev [ccextractor build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libleptonica-dev            
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install clang [ccextractor build Dependency]"
+  ansible.builtin.package:
+    name:
+      - clang            
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install libclang-dev [ccextractor build Dependency]"
+  ansible.builtin.package:
+    name:
+      - libclang-dev           
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install cargo [ccextractor build Dependency]"
+  ansible.builtin.package:
+    name:
+      - cargo           
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false 
+
+- name: "Install autoconf [ccextractor build Dependency]"
+  ansible.builtin.package:
+    name:
+      - autoconf           
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install curl [rust build Dependency]"
+  ansible.builtin.package:
+    name:
+      - curl           
+    state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+- name: "Install rust [ccextractor build Dependency]"
+  become: true
+  ansible.builtin.shell: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -q -y"
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  changed_when: false
+
+# - name: Start with Clean State
+#   ansible.builtin.file:
+#     path: "/var/tmp/ccextractor"
+#     state: absent
+
+- name: Create ccextractor build directory
+  ansible.builtin.file:
+    path: "/var/tmp/ccextractor"
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+    recurse: yes
+
+- name: Add directory as Safe for Git
+  shell: "git config --global --add safe.directory /var/tmp/ccextractor"
+  #become: true
+#  args:
+#    chdir: "{{ '/var/tmp/libgpac-dev' }}"
+  changed_when: false
+
+- name: Git checkout ccextractor repo
+  ansible.builtin.git:
+    repo: 'https://github.com/CCExtractor/ccextractor.git'
+    dest: /var/tmp/ccextractor
+    version: v0.94
+    depth: 1
+    force: true
+    accept_newhostkey: true
+
+- name: Build ccextractor source
+  shell: "{{ item }}"
+  become: true
+  args:
+    chdir: "{{ '/var/tmp/ccextractor/linux' }}"
+  with_items:
+    - ./autogen.sh
+    - ./configure
+    - yes yes | make --silent
+  changed_when: false
+
+- name: Install ccextractor source
+  shell: "{{ item }}"
+  become: true
+  args:
+    chdir: "{{ '/var/tmp/ccextractor/linux' }}"
+  with_items:
+    - make install
+  changed_when: false

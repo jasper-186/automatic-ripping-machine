@@ -1,0 +1,170 @@
+---
+- name: Gather installed packages
+  package_facts:
+
+- name: "Install eject [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - eject
+    state: present
+
+- name: "Install default-jre-headless [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - default-jre-headless
+    state: present
+
+- name: "Install python3 [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - python3
+    state: present
+
+- name: "Install python3-dev [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - python3-dev
+    state: present
+
+- name: "Install python3-pip [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - python3-pip
+    state: present
+
+- name: "Install python3-venv [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - python3-venv
+    state: present
+
+- name: "Install python3-flask [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - python3-flask
+    state: present
+
+- name: "Install python3-wheel [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - python3-wheel
+    state: present
+
+- name: "Install python3-setuptools [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - python3-setuptools
+    state: present
+
+- name: "Install libgnutls28-dev [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - libgnutls28-dev
+    state: present
+
+- name: "Install libcurl4-openssl-dev [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - libcurl4-openssl-dev
+    state: present
+
+- name: "Install libssl-dev [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - libssl-dev
+    state: present
+
+- name: "Install abcde [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - abcde
+    state: present
+
+- name: "Install flac [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - flac
+    state: present
+
+- name: "Install imagemagick [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - imagemagick
+    state: present
+
+- name: "Install glyrc [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - glyrc
+    state: present
+
+- name: "Install cdparanoia [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - cdparanoia
+    state: present
+
+- name: "Install at [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - at
+    state: present
+
+- name: "Install lsdvd [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - lsdvd
+    state: present
+
+- name: "Install ffmpeg [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - ffmpeg
+    state: present
+
+- name: "Install handbrake-cli [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - handbrake-cli
+    state: present
+
+- name: "Install libavcodec-extra [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - libavcodec-extra
+    state: present
+
+- name: "Install libdvdcss2 [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - libdvdcss2
+    state: present
+  when: "'libdvdcss2' in ansible_facts.packages"
+  changed_when: false
+
+- name: "Build and Install libdvdcss2 [Arm Dependency]"
+  ansible.builtin.include_tasks: install-libdvdcss2-from-source.yml
+  when: "'libdvdcss2' not in ansible_facts.packages"
+  
+- name: "Install libdvd-pkg [Arm Dependency]"
+  ansible.builtin.package:
+    name:
+      - libdvd-pkg
+    state: present
+  when: "'libdvd-pkg' in ansible_facts.packages"
+  changed_when: false
+
+- name: "Build and Install libdvd-pkg [Arm Dependency]"
+  ansible.builtin.include_tasks: install-libdvd-pkg-from-source.yml
+  when: "'libdvd-pkg' not in ansible_facts.packages"
+  
+  
+  # if we're disabling the encryption we need to have VLC installed, and CVLC installed, AND run the bypass before we run Arm
+- name: "Install VLC [ Disc Unlock Dependency ]"
+  ansible.builtin.package:
+    name:
+      - vlc
+      - vlc-bin
+    state: present
+  changed_when: false
+  when: arm_unlock_disc

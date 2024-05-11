@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  become: yes
+  tasks:
+    - name: "Include debian-arm-server"
+      include_role:
+        name: "debian-arm-server"
+      #ansible.builtin.import_tasks: "../../tasks/main.yml"

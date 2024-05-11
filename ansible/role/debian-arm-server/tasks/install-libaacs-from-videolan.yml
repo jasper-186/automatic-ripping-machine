@@ -1,0 +1,47 @@
+---
+- name: Create libbluray build directory
+  ansible.builtin.file:
+    path: "/var/tmp/libbluray"
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+    recurse: yes
+
+#git config --global --add safe.directory /var/tmp/libbluray
+- name: Add directory as Safe for Git
+  shell: "git config --global --add safe.directory /var/tmp/libbluray"
+  changed_when: false
+
+- name: Git checkout libbluray repo
+  ansible.builtin.git:
+    repo: 'https://code.videolan.org/videolan/libbluray.git'
+    dest: /var/tmp/libbluray
+    version: "v2.4.0"
+    depth: 1
+    force: true
+    accept_newhostkey: true
+
+- name: Build libbluray source
+  shell: "{{ item }}"
+  become: true
+  args:
+    chdir: "{{ '/var/tmp/libbluray' }}"
+  with_items:
+    - ./configure
+    - yes yes | make --silent
+  changed_when: false
+
+- name: Install libbluray 
+  shell: "{{ item }}"
+  become: true
+  args:
+    chdir: "{{ '/var/tmp/libbluray' }}"
+  with_items:
+    - make install-lib
+  changed_when: false
+
+# - name: Cleanup libpac-dev Build Directory
+#   ansible.builtin.file:
+#     path: "/var/tmp/libbluray"
+#     state: absent

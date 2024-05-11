@@ -1,0 +1,59 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+    - name: molecule-debian-latest
+      image: debian:latest
+      privileged: true
+      docker_host: ssh://ansible@192.168.30.201
+      env:
+        SUDO_GROUP: sudo
+        MOLECULE_DOCKER_TEST: "1"
+      #capabilities:    
+    # - name: molecule-ubuntu-latest
+    #   image: ubuntu:latest
+    #   privileged: true
+    #   docker_host: ssh://ansible@192.168.30.201
+    #   env:
+    #     SUDO_GROUP: sudo    
+    #     MOLECULE_DOCKER_TEST: "1"
+    #   capabilities:
+    # - name: molecule-ubuntu-20.04
+    #   image: ubuntu:20.04
+    #   privileged: true
+    #   docker_host: ssh://ansible@192.168.30.201
+    #   env:
+    #     SUDO_GROUP: sudo
+    #     MOLECULE_DOCKER_TEST: "1"
+      #capabilities:
+provisioner:
+  name: ansible
+  options:
+    vvv: True
+  inventory:
+    host_vars:
+      molecule-ubuntu-20.04:
+        ansible_ssh_user: ansible
+        ansible_user: ansible
+      molecule-ubuntu-latest:
+        ansible_ssh_user: ansible
+        ansible_user: ansible
+      molecule-debian-latest:
+        ansible_ssh_user: ansible
+        ansible_user: ansible
+      molecule-fedora-latest:
+        ansible_ssh_user: ansible
+        ansible_user: ansible
+      # setting for the platform instance named 'instance'
+      #docker-ubuntu-20.04:
+        #ansible_user: ansible
+  playbooks:
+  #  create: create.yml
+    converge: converge.yml
+  #   destroy: destroy.yml
+  # env: 
+  #   DOCKER_HOST: ssh://ansible@192.168.30.201
+verifier:
+  name: ansible

@@ -1,0 +1,48 @@
+---
+# defaults file for roles/debian-arm-server
+arm_name: "Automatic Ripping Machine"
+arm_date_format: "%Y-%m-%d_%H-%M-%S"
+arm_allow_duplicates: false
+arm_raw_path: "/var/arm/media/raw/"
+arm_transcode_path: "/var/arm/media/transcode/"
+arm_video_path: "/var/arm/media/completed/"
+
+arm_audio_path: "/var/arm/media/audio/"
+arm_audio_outputtype: "flac"
+
+#arm_audio_outputformat: '${OUTPUT}/${ARTISTFILE}/${ALBUMFILE}/${TRACKNUM}.${TRACKFILE}'
+#arm_audio_vaoutputformat: '${OUTPUT}/Various Artists/${ALBUMFILE}/${TRACKNUM}.${ARTISTFILE}-${TRACKFILE}'
+
+#arm_audio_onetrack_outputformat: '${OUTPUT}/${ARTISTFILE}/${ALBUMFILE}/${ALBUMFILE}'
+#arm_audio_onetrack_vaoutputformat: '${OUTPUT}/Various Artists/${ALBUMFILE}/${ALBUMFILE}'
+
+arm_metadata_provider: "omdb"
+# User Creds
+arm_omdb_api_key: "cd39484b"
+arm_tmdb_api_key: ""
+
+arm_unlock_disc: true
+
+makemkv_args: ""
+makemkv_download_hashed_keys: true
+
+handbrake_dest_ext: mkv
+
+#### ROKU 3 ###################################################################
+#handbrake_preset_dvd: "General/Super HQ 480p30 Surround"
+#handbrake_arg_dvd: "--subtitle scan -F --optimize --audio-lang-list eng,und"
+#handbrake_preset_bd: "Devices/Roku 1080p30 Surround"
+#handbrake_arg_bd: "--subtitle scan -F --audio-lang-list eng,und --all-audio --optimize"
+###############################################################################
+#### ROKU 4 ###################################################################
+
+# This Preset uses x264 by default, and mp4 container, so override those to x265 and format mkv
+handbrake_preset_dvd: "General/Super HQ 480p30 Surround"
+handbrake_arg_dvd: "--subtitle scan -F --optimize --audio-lang-list eng,und --all-audio --encoder x265 -f av_mkv"
+
+# This Preset uses x265 by default
+handbrake_preset_bd: "Devices/Roku 2160p60 4K HEVC Surround"
+handbrake_arg_bd:  "--subtitle scan -F --optimize --audio-lang-list eng,und --all-audio"
+
+###############################################################################
+

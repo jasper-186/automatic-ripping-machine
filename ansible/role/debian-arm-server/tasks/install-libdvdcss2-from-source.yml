@@ -1,0 +1,47 @@
+---
+# ansible.builtin.apt -> deb
+# Requires the xz-utils package to extract the control file of the deb package to install.
+- name: "Install xz-utils [ansible build Dependency]"
+  ansible.builtin.package:
+    name:
+      - xz-utils
+    state: present
+  changed_when: false
+
+- name: Gather installed packages
+  package_facts:
+
+- name: Create /var/tmp/libdvdcss2
+  ansible.builtin.file:
+    path: /var/tmp/libdvdcss2
+    state: directory
+    recurse: yes
+
+- name: Download libdvdcss2_1.2.13-0_amd64.deb [if not in APT]
+  ansible.builtin.get_url: 
+    url: "http://download.videolan.org/pub/debian/stable/libdvdcss2_1.2.13-0_amd64.deb"
+    dest: "/var/tmp/libdvdcss2/libdvdcss2_1.2.13-0_amd64.deb"
+    #owner: arm
+    #group: arm
+    mode: '0555'
+  when: "'libdvdcss2' not in ansible_facts.packages"
+  changed_when: false
+
+  # sudo dpkg -i libdvdcss2_1.2.13-0_amd64.deb
+- name: Install libdvdcss2 [if not in APT]
+  ansible.builtin.apt:
+    deb: /var/tmp/libdvdcss2/libdvdcss2_1.2.13-0_amd64.deb
+    state: present
+  when: "'libdvdcss2' not in ansible_facts.packages"
+  changed_when: false
+ 
+- name: Cleanup /var/tmp/libdvdcss2
+  ansible.builtin.file:
+    path: /var/tmp/libdvdcss2
+    state: absent
+
+# apt --fix-broken install
+- name: fix broken packages
+  apt:
+    state: fixed
+  changed_when: false

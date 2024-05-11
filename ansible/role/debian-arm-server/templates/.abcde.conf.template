@@ -1,0 +1,39 @@
+CDDBMETHOD=musicbrainz
+FLACENCODERSYNTAX=flac
+CDROMREADERSYNTAX=cdparanoia
+PADTRACKS=y
+INTERACTIVE=n
+FLAC=flac
+FLACOPTS="-s -e -V -8 --silent"
+ACTIONS=musicbrainz,read,encode,tag,move,clean,playlist,getalbumart,embedalbumart
+# OUTPUTDIR="$home/music/"
+OUTPUTDIR="{{ arm_audio_path}}"
+OUTPUTTYPE="{{ arm_audio_outputtype }}"
+################################
+
+# Decide here how you want the tracks labelled for a standard 'single-artist',
+# multi-track encode and also for a multi-track, 'various-artist' encode:
+OUTPUTFORMAT='${OUTPUT}/${ARTISTFILE}/${ALBUMFILE}/${TRACKNUM}.${TRACKFILE}'
+VAOUTPUTFORMAT='${OUTPUT}/Various Artists/${ALBUMFILE}/${TRACKNUM}.${ARTISTFILE}-${TRACKFILE}'
+
+# Decide here how you want the tracks labelled for a standard 'single-artist',
+# single-track encode and also for a single-track 'various-artist' encode.
+# (Create a single-track encode with 'abcde -1' from the commandline.)
+ONETRACKOUTPUTFORMAT='${OUTPUT}/${ARTISTFILE}/${ALBUMFILE}/${ALBUMFILE}'
+VAONETRACKOUTPUTFORMAT='${OUTPUT}/Various Artists/${ALBUMFILE}/${ALBUMFILE}'
+
+# Create playlists for single and various-artist encodes. I would suggest
+# commenting these out for single-track encoding.
+PLAYLISTFORMAT='${OUTPUT}/${ARTISTFILE}/${ALBUMFILE}/${ALBUMFILE}.m3u'
+VAPLAYLISTFORMAT='${OUTPUT}/Various Artists/${ALBUMFILE}/${ALBUMFILE}.m3u'
+
+##################################
+MAXPROCS=4
+
+mungefilename ()
+{ 
+    echo "$@" | sed s,:,\ -,g | tr -d \?\[:cntrl:\] 
+}
+EJECTCD=y
+
+EXTRAVERBOSE=2

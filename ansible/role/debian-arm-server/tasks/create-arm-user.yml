@@ -1,0 +1,12 @@
+---
+- name: Create user 'arm'
+  ansible.builtin.user:
+    name: arm 
+    createhome: true
+    home: /home/arm 
+    system: true 
+    shell: /bin/false
+    groups: cdrom
+    append: true
+  become: true
+  changed_when: false

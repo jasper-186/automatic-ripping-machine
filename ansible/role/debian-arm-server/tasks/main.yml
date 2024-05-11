@@ -1,0 +1,11 @@
+---
+# tasks file for roles/debian-arm-server
+- ansible.builtin.include_tasks: create-arm-user.yml
+- ansible.builtin.include_tasks: install-arm-package-dependencies.yml
+- ansible.builtin.include_tasks: install-makemkv-from-source.yml
+- ansible.builtin.include_tasks: install-arm.yml
+- ansible.builtin.include_tasks: configure-arm.yml
+- ansible.builtin.include_tasks: configure-drives.yml
+- ansible.builtin.include_tasks: install-armui-service.yml
+- ansible.builtin.include_tasks: restart-server.yml
+- ansible.builtin.include_tasks: create-applied-role-file.yml

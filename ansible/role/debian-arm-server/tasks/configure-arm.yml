@@ -1,0 +1,146 @@
+---
+## copy the unlock script into the correct place
+- name: Create VLC Unlocking script
+  ansible.builtin.copy:
+    src: unlock_disc_vlc.sh
+    dest: /opt/arm/setup/unlock_disc_vlc.sh
+    owner: arm
+    group: arm
+    mode: 0755
+  changed_when: false
+  when: arm_unlock_disc
+
+# copy the automedia unlock script into the correct place
+- name: Create udev script for Unlock
+  ansible.builtin.copy:
+    src: 51-automedia.unlock.rules
+    dest: /opt/arm/setup/51-automedia.unlock.rules
+    owner: arm
+    group: arm
+    mode: 0755
+  changed_when: false
+  when: arm_unlock_disc
+
+#ln -s /opt/arm/setup/51-automedia.rules /lib/udev/rules.d/
+- name: Create the udev symbolic link for the unlock script
+  ansible.builtin.file:
+    src: /opt/arm/setup/51-automedia.unlock.rules
+    dest: /lib/udev/rules.d/51-automedia.unlock.rules
+    owner: root
+    group: root
+    state: link
+  changed_when: false
+  when: arm_unlock_disc
+
+- name: Create /opt/arm/config
+  ansible.builtin.file:
+    path: "/opt/arm/config"
+    state: directory
+
+- name: Create .abcde config file
+  ansible.builtin.template:
+    src: .abcde.conf.template
+    dest: /opt/arm/config/abcde.conf
+    owner: arm
+    group: arm
+
+- name: Create /opt/arm/.MakeMKV
+  ansible.builtin.file:
+    path: "/opt/arm/config/.MakeMKV"
+    state: directory
+    owner: arm
+    group: arm
+
+#copy MakeMKV/settings.conf 
+- name: Create MakeMKV settings file
+  ansible.builtin.copy:
+    src: MakeMKV.settings.conf
+    dest: /opt/arm/config/.MakeMKV/settings.conf
+    owner: arm
+    group: arm
+
+#cp docs/arm.yaml.sample arm.yaml
+- name: Create arm.yaml file
+  ansible.builtin.template: 
+    src: arm.yaml.template 
+    dest: "/opt/arm/config/arm.yaml"
+    owner: arm 
+    group: arm
+
+- name: Create /opt/arm/config
+  ansible.builtin.file:
+    path: "/etc/arm"
+    state: directory
+
+#mkdir /etc/arm/
+- name: Create /etc/arm/config
+  ansible.builtin.file:
+    src: /opt/arm/config
+    dest: /etc/arm/config
+    owner: arm
+    group: arm
+    state: link
+
+# make sure directorys in config exists
+- name: Create arm directorys 
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ arm_raw_path }}"
+    - "{{ arm_transcode_path }}"
+    - "{{ arm_video_path }}"
+    - "{{ arm_audio_path }}"
+
+#ln -s /opt/arm/setup/apprise.yaml /etc/arm/
+- name: Create apprise.yaml symbolic link
+  ansible.builtin.file:
+    src: /opt/arm/setup/apprise.yaml
+    dest: /opt/arm/config/apprise.yaml
+    owner: arm
+    group: arm
+    state: link
+    
+#sudo chmod +x /opt/arm/scripts/arm_wrapper.sh
+- name: Set /opt/arm/scripts/thickclient/arm_wrapper.sh as executible
+  ansible.builtin.file:
+    path: /opt/arm/scripts/thickclient/arm_wrapper.sh
+    owner: arm
+    group: arm
+    mode: 'ugo+x'
+
+#sudo chmod +x /opt/arm/scripts/update_key.sh
+- name: Set /opt/arm/scripts/update_key.sh as executible
+  ansible.builtin.file:
+    path: /opt/arm/scripts/update_key.sh
+    owner: arm
+    group: arm
+    mode: 'ugo+x'
+
+#####Extra/Unknown STUFF######
+- name: Create /var/arm for logging and default stuff
+  ansible.builtin.file:
+    path: "/var/arm"
+    state: directory
+    owner: arm
+    group: arm
+
+- name: Create /var/arm/logs 
+  ansible.builtin.file:
+    path: "/var/arm/logs"
+    state: directory
+    owner: arm
+    group: arm
+
+# for some reason both opt/arm/logs && /home/arm/logs are required
+- name: Create /opt/arm/logs
+  ansible.builtin.file:
+    src: /var/arm/logs
+    dest: /opt/arm/logs
+    state: link
+
+- name: Create /home/arm
+  ansible.builtin.file:
+    src: /opt/arm
+    dest: /home/arm
+    state: link

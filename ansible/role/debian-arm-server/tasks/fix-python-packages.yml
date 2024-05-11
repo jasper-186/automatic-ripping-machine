@@ -1,0 +1,26 @@
+---
+- name: Get Python package path
+  shell: "pip3 show werkzeug | grep Location | sed 's/Location: //'"
+  register: module_path
+  
+- name: Check if Routing Folder Exists
+  stat:
+    path: "{{module_path.stdout}}/werkzeug/routing"
+  register: folderStat
+- name: Check if Routing File Exists
+  stat:
+    path: "{{module_path.stdout}}/werkzeug/routing.py"
+  register: fileStat
+
+- name: Move Folder if both Exists (Part 1)
+  ansible.builtin.copy:
+    remote_src: yes
+    src: "{{module_path.stdout}}/werkzeug/routing"
+    dest: "{{module_path.stdout}}/werkzeug/routing_disabled"
+  when: folderStat.stat.exists == true and fileStat.stat.exists == true
+
+- name: Move Folder if both Exists (Part 2)
+  ansible.builtin.file:
+    path: "{{module_path.stdout}}/werkzeug/routing"
+    state: absent
+  when: folderStat.stat.exists == true and fileStat.stat.exists == true

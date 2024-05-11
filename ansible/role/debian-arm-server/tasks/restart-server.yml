@@ -1,0 +1,11 @@
+---
+- name: Reboot the Debian or Ubuntu server
+  reboot:
+    msg: "Reboot initiated by Ansible due role installation - arm_server"
+    connect_timeout: 5
+    reboot_timeout: 300
+    pre_reboot_delay: 0
+    post_reboot_delay: 30
+    test_command: uptime
+  when: lookup('env','MOLECULE_DOCKER_TEST', "0") != "1"
+  #when: ansible_os_family == "Debian"

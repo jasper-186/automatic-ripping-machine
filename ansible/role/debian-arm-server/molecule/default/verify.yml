@@ -1,0 +1,37 @@
+---
+# This is an example playbook to execute Ansible tests.
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+  # Start by validating that the Role Was "Applied" correctly
+    - name: "Get stats for role applied folder"
+      stat:
+        path: "/home/ansible/applied-roles/debian-arm-server.applied"
+      register: role_file
+
+    - name: Assert Role File is Created
+      assert:
+        that: 
+          - role_file.stat.exists
+
+  # ensure the makemkv command exists
+    - name: Check for makemkv command
+      shell: command -v makemkvcon
+      register: command_results 
+      failed_when: command_results.rc == 1
+    
+    - name: Check for HandBrakeCLI command
+      shell: command -v HandBrakeCLI 
+      register: command_results 
+      failed_when: command_results.rc == 1
+   
+    - name: "stat /lib/udev/rules.d/51-automedia.rules exists"
+      stat:
+        path: "/lib/udev/rules.d/51-automedia.rules"
+      register: automedia_rules_stat
+    - name: "assert that /lib/udev/rules.d/51-automedia.rules exists"
+      assert:
+        that:
+          - automedia_rules_stat.stat.exists == True
+        

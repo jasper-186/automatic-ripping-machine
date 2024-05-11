@@ -1,0 +1,144 @@
+---
+- name: Gather installed packages [MakeMKV Dependency]
+  package_facts:
+
+- name: "Install git [MakeMKV Dependency]"
+  ansible.builtin.package:
+    name:
+      - git
+    state: present
+
+- name: "Install wget [MakeMKV Dependency]"
+  ansible.builtin.package:
+    name:
+      - wget
+    state: present
+
+- name: "Install build-essential [MakeMKV Dependency]"
+  ansible.builtin.package:
+    name:
+      - build-essential
+    state: present
+
+- name: "Install pkg-config [MakeMKV Dependency]"
+  ansible.builtin.package:
+    name:
+      - pkg-config
+    state: present
+
+- name: "Install libc6-dev [MakeMKV Dependency]"
+  ansible.builtin.package:
+    name:
+      - libc6-dev
+    state: present
+
+- name: "Install libssl-dev [MakeMKV Dependency]"
+  ansible.builtin.package:
+    name:
+      - libssl-dev
+    state: present
+
+- name: "Install libexpat1-dev [MakeMKV Dependency]"
+  ansible.builtin.package:
+    name:
+      - libexpat1-dev
+    state: present
+
+- name: "Install libavcodec-dev [MakeMKV Dependency]"
+  ansible.builtin.package:
+    name:
+      - libavcodec-dev
+    state: present
+
+- name: "Install libgl1-mesa-dev [MakeMKV Dependency]"
+  ansible.builtin.package:
+    name:
+      - libgl1-mesa-dev
+    state: present
+
+- name: "Install qtbase5-dev [MakeMKV Dependency]"
+  ansible.builtin.package:
+    name:
+      - qtbase5-dev
+    state: present
+
+- name: "Install zlib1g-dev [MakeMKV Dependency]"
+  ansible.builtin.package:
+    name:
+      - zlib1g-dev
+    state: present
+
+- name: "Install ccextractor [MakeMKV Dependency]"
+  ansible.builtin.package:
+    name:
+      - ccextractor
+    state: present
+  when: "'ccextractor' in ansible_facts.packages"
+
+- name: "Build ccextractor From Github [MakeMKV Dependency]"
+  ansible.builtin.include_tasks: install-ccextractor-from-github.yml
+  when: "'ccextractor' not in ansible_facts.packages"
+
+- name: Create MakeMKV build directory
+  ansible.builtin.file:
+    path: "/var/tmp/makeMKV"
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+    recurse: yes
+
+- name: Download bin src
+  ansible.builtin.get_url: 
+    url: "https://www.makemkv.com/download/makemkv-bin-1.17.6.tar.gz"
+    dest: "/var/tmp/makeMKV/makemkv-bin-1.17.6.tar.gz"
+    owner: root
+    group: root
+    mode: '0755'
+  
+- name: Download source src
+  ansible.builtin.get_url: 
+    url: "https://www.makemkv.com/download/makemkv-oss-1.17.6.tar.gz"
+    dest: "/var/tmp/makeMKV/makemkv-oss-1.17.6.tar.gz"
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Unarchive the bin Source code
+  ansible.builtin.unarchive:
+    src: /var/tmp/makeMKV/makemkv-bin-1.17.6.tar.gz
+    dest: /var/tmp/makeMKV/
+    remote_src: yes
+    
+- name: Unarchive the Source code
+  ansible.builtin.unarchive:
+    src: /var/tmp/makeMKV/makemkv-oss-1.17.6.tar.gz
+    dest: /var/tmp/makeMKV/
+    remote_src: yes
+
+- name: Build MakeMKV source
+  shell: "{{ item }}"
+  become: true
+  args:
+    chdir: "{{ '/var/tmp/makeMKV/makemkv-oss-1.17.6' }}"
+  with_items:
+    - ./configure
+    - yes yes | make --silent
+    - make install
+  changed_when: false
+
+- name: Build MakeMKV bin
+  shell: "{{ item }}"
+  become: true
+  args:
+    chdir: "{{ '/var/tmp/makeMKV/makemkv-bin-1.17.6' }}"
+  with_items:
+    #- ./configure
+    - yes yes | make --silent
+    - make install
+  changed_when: false
+
+# - name: cleanup MakeMKV build directory
+#   ansible.builtin.file:
+#     path: "/var/tmp/makeMKV"
+#     state: absent
