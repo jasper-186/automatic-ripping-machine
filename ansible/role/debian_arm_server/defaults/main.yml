@@ -1,5 +1,5 @@
 ---
-# defaults file for roles/debian-arm-server
+# defaults file for roles/debian_arm_server
 arm_name: "Automatic Ripping Machine"
 arm_date_format: "%Y-%m-%d_%H-%M-%S"
 arm_allow_duplicates: false

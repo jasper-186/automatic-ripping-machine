@@ -1,7 +1,7 @@
 galaxy_info:
   author: Joe Echtenkamp
   description: Install an Automatic Ripping Machine onto a device
-  role_name: debian-arm-server  # if absent directory name hosting role is used instead
+  role_name: debian_arm_server  # if absent directory name hosting role is used instead
   namespace: roles  # if absent, author is used instead
 
   # If the issue tracker for your role is not on github, uncomment the
@@ -48,5 +48,3 @@ galaxy_info:
     # NOTE: A tag is limited to a single word comprised of alphanumeric characters.
     #       Maximum 20 tags per role.
 
-dependencies:
-  - role: generic-smb-client

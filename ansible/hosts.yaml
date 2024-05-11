@@ -1,6 +1,5 @@
 all:
-  children:
-    hosts:
-      arm-server:
-        ansible_host: 192.168.20.160
+  hosts:
+    arm-server:
+      ansible_host: 192.168.20.160
       

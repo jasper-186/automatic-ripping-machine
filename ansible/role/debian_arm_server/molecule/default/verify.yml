@@ -7,7 +7,7 @@
   # Start by validating that the Role Was "Applied" correctly
     - name: "Get stats for role applied folder"
       stat:
-        path: "/home/ansible/applied-roles/debian-arm-server.applied"
+        path: "/home/ansible/applied-roles/debian_arm_server.applied"
       register: role_file
 
     - name: Assert Role File is Created

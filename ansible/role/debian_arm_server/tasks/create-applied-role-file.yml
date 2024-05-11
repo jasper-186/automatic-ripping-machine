@@ -8,7 +8,7 @@
 
 - name: Creates ansible role applied file
   file:
-    path: /home/ansible/applied-roles/debian-arm-server.applied
+    path: /home/ansible/applied-roles/debian_arm_server.applied
     state: touch
     owner: ansible 
     group: ansible

@@ -3,7 +3,7 @@
   hosts: all
   become: yes
   tasks:
-    - name: "Include debian-arm-server"
+    - name: "Include debian_arm_server"
       include_role:
-        name: "debian-arm-server"
+        name: "debian_arm_server"
       #ansible.builtin.import_tasks: "../../tasks/main.yml"

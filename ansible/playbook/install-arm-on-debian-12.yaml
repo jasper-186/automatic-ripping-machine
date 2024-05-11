@@ -9,4 +9,4 @@
   tasks:
     - name: Include role
       ansible.builtin.include_role: 
-        name: roles/debian-arm-server
+        name: role/debian_arm_server
