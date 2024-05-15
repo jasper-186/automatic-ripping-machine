@@ -12,9 +12,15 @@
   changed_when: false
   when: "'libgpac-dev' in ansible_facts.packages"
 
+- name: Check if libgpac-dev is already installed
+  stat:
+    path: /usr/local/include/gpac
+  register: libgpac_exist
+  when: "'libgpac-dev' not in ansible_facts.packages"
+
 - name: "Build libgpac-dev From Scratch [ccextractor build Dependency]"
   ansible.builtin.include_tasks: install-libgpac-from-github.yml
-  when: "'libgpac-dev' not in ansible_facts.packages"
+  when: "'libgpac-dev' not in ansible_facts.packages and not libgpac_exist.stat.exists"
 
 - name: "Install libglew-dev [ccextractor build Dependency]"
   ansible.builtin.package:

@@ -14,7 +14,8 @@ StandardOutput=append:/home/arm/logs/WebUI.log
 StandardError=append:/home/arm/logs/WebUI.log
 Restart=always
 RestartSec=3
-ExecStartPre=/bin/bash -xc '/usr/bin/systemctl is-active --quiet armui.service && exit 1 || exit 0'
+# This locks the service from starting because systemctl doesnt return, it just moves to a "show" command
+#ExecStartPre=/bin/bash -xc '/usr/bin/systemctl is-active --quiet armui.service && exit 1 || exit 0'
 ExecStart=/opt/arm/venv/bin/python3 /opt/arm/arm/runui.py
 
 [Install]

@@ -8,11 +8,12 @@
 
 - name: Create armui systemd service
   ansible.builtin.copy:
-    src: armui.service
+    src: /opt/arm/setup/armui.service
     dest: "/etc/systemd/system/armui.service"
     force: true
     owner: root
     group: root
+    remote_src: true
   when: lookup('env','MOLECULE_DOCKER_TEST', "0") != "1"
 
 - name: enable armui systemd service

@@ -7,7 +7,7 @@ FLAC=flac
 FLACOPTS="-s -e -V -8 --silent"
 ACTIONS=musicbrainz,read,encode,tag,move,clean,playlist,getalbumart,embedalbumart
 # OUTPUTDIR="$home/music/"
-OUTPUTDIR="{{ arm_audio_path}}"
+OUTPUTDIR="{{ arm_audio_path }}"
 OUTPUTTYPE="{{ arm_audio_outputtype }}"
 ################################
 

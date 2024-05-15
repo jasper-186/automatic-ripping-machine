@@ -75,9 +75,15 @@
     state: present
   when: "'ccextractor' in ansible_facts.packages"
 
+- name: Check is ccextractor installed
+  shell: command -v ccextractor >/dev/null 2>&1
+  register: is_ccextractor_exist
+  ignore_errors: true
+  when: "'ccextractor' not in ansible_facts.packages"
+
 - name: "Build ccextractor From Github [MakeMKV Dependency]"
   ansible.builtin.include_tasks: install-ccextractor-from-github.yml
-  when: "'ccextractor' not in ansible_facts.packages"
+  when: "'ccextractor' not in ansible_facts.packages and is_ccextractor_exist.rc == 1"
 
 - name: Create MakeMKV build directory
   ansible.builtin.file:

@@ -5,7 +5,7 @@
   changed_when: false
 - name: Clone Arm Repo From Github
   ansible.builtin.git:
-    repo: https://github.com/automatic-ripping-machine/automatic-ripping-machine.git
+    repo: https://github.com/jasper-186/automatic-ripping-machine.git
     dest: /opt/arm
     force: true
     accept_newhostkey: true
