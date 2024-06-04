@@ -9,7 +9,8 @@
     dest: /opt/arm
     force: true
     accept_newhostkey: true
-    
+    version: thick-client-debian-12
+
 - name: Reset permissions on /opt/arm directory
   become: true
   ansible.builtin.file:

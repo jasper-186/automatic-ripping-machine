@@ -76,14 +76,14 @@
   when: "'ccextractor' in ansible_facts.packages"
 
 - name: Check is ccextractor installed
-  shell: command -v ccextractor >/dev/null 2>&1
-  register: is_ccextractor_exist
+  shell: command -v ccextractor >/dev/null 2>&1 
+  register: is_ccextractor_already_installed
   ignore_errors: true
   when: "'ccextractor' not in ansible_facts.packages"
 
 - name: "Build ccextractor From Github [MakeMKV Dependency]"
   ansible.builtin.include_tasks: install-ccextractor-from-github.yml
-  when: "'ccextractor' not in ansible_facts.packages and is_ccextractor_exist.rc == 1"
+  when: "'ccextractor' not in ansible_facts.packages and is_ccextractor_already_installed.rc != 0"
 
 - name: Create MakeMKV build directory
   ansible.builtin.file:
@@ -96,29 +96,29 @@
 
 - name: Download bin src
   ansible.builtin.get_url: 
-    url: "https://www.makemkv.com/download/makemkv-bin-1.17.6.tar.gz"
-    dest: "/var/tmp/makeMKV/makemkv-bin-1.17.6.tar.gz"
+    url: "https://www.makemkv.com/download/makemkv-bin-1.17.7.tar.gz"
+    dest: "/var/tmp/makeMKV/makemkv-bin-1.17.7.tar.gz"
     owner: root
     group: root
     mode: '0755'
   
 - name: Download source src
   ansible.builtin.get_url: 
-    url: "https://www.makemkv.com/download/makemkv-oss-1.17.6.tar.gz"
-    dest: "/var/tmp/makeMKV/makemkv-oss-1.17.6.tar.gz"
+    url: "https://www.makemkv.com/download/makemkv-oss-1.17.7.tar.gz"
+    dest: "/var/tmp/makeMKV/makemkv-oss-1.17.7.tar.gz"
     owner: root
     group: root
     mode: '0755'
 
 - name: Unarchive the bin Source code
   ansible.builtin.unarchive:
-    src: /var/tmp/makeMKV/makemkv-bin-1.17.6.tar.gz
+    src: /var/tmp/makeMKV/makemkv-bin-1.17.7.tar.gz
     dest: /var/tmp/makeMKV/
     remote_src: yes
     
 - name: Unarchive the Source code
   ansible.builtin.unarchive:
-    src: /var/tmp/makeMKV/makemkv-oss-1.17.6.tar.gz
+    src: /var/tmp/makeMKV/makemkv-oss-1.17.7.tar.gz
     dest: /var/tmp/makeMKV/
     remote_src: yes
 
@@ -126,7 +126,7 @@
   shell: "{{ item }}"
   become: true
   args:
-    chdir: "{{ '/var/tmp/makeMKV/makemkv-oss-1.17.6' }}"
+    chdir: "{{ '/var/tmp/makeMKV/makemkv-oss-1.17.7' }}"
   with_items:
     - ./configure
     - yes yes | make --silent
@@ -137,7 +137,7 @@
   shell: "{{ item }}"
   become: true
   args:
-    chdir: "{{ '/var/tmp/makeMKV/makemkv-bin-1.17.6' }}"
+    chdir: "{{ '/var/tmp/makeMKV/makemkv-bin-1.17.7' }}"
   with_items:
     #- ./configure
     - yes yes | make --silent
