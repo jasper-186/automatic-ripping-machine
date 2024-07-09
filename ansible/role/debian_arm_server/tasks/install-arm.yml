@@ -11,6 +11,16 @@
     accept_newhostkey: true
     version: thick-client-debian-12
 
+- name: init the submodules
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ '/opt/arm' }}"
+  with_items:
+    - git submodule init
+    - git submodule update
+  changed_when: false
+
+
 - name: Reset permissions on /opt/arm directory
   become: true
   ansible.builtin.file:

@@ -50,7 +50,33 @@
     - "{{ arm_video_path }}"
     - "{{ arm_audio_path }}"
 
-    
+- name: Reset permissions on config directories
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "775"
+    owner: arm
+    group: arm
+    recurse: true
+  changed_when: false
+  with_items:
+    - "{{ arm_raw_path }}"
+    - "{{ arm_transcode_path }}"
+    - "{{ arm_video_path }}"
+    - "{{ arm_audio_path }}"
+
+- name: Reset permissions on /var/arm directory
+  become: true
+  ansible.builtin.file:
+    path: "/var/arm"
+    state: directory
+    mode: "777"
+    owner: arm
+    group: arm
+    recurse: true
+  changed_when: false
+
 #sudo chmod +x /opt/arm/scripts/arm_wrapper.sh
 - name: Set /opt/arm/scripts/thickclient/arm_wrapper.sh as executible
   ansible.builtin.file:
@@ -87,4 +113,10 @@
   ansible.builtin.file:
     src: /var/arm/logs
     dest: /opt/arm/logs
+    state: link
+
+- name: Create /home/arm/logs
+  ansible.builtin.file:
+    src: /var/arm/logs
+    dest: /home/arm/logs
     state: link
